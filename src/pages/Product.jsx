@@ -15,7 +15,9 @@ const Product = () => {
 
   const dispatch = useDispatch()
   const location = useLocation()
-  const [productInfo, setProductInfo] = useState({ name: "", price: "", url: "" })
+
+  let loc = location?.search.split('=')[1]
+  const [productInfo, setProductInfo] = useState({ name: "", price: "", url: ""})
 
   const onChangeFunc = (e, type) => {
     if (type === "url") {
@@ -26,34 +28,36 @@ const Product = () => {
 
     }
   }
-  let loc = location?.search.split('=')[1]
-
   
-
   useEffect(() => {
     const fetchData = async () => {
       if (loc) {
-        const foundData = data.find(dt => dt.id === loc);
+        console.log(loc, "use effect içerisi loc degeri")
+        const foundData = await data.find(dt => dt.id === loc)
+        console.log(productInfo, "loc tıklaması sonrası")
         if (foundData) {
           console.log("asdasd")
-          await setProductInfo(foundData);
+          setProductInfo(foundData);
         }
       }
     };
   
     fetchData();
-  }, [loc]);
+  }, [loc,data]);
+
   const buttonFuncUpdate = () => {
+    console.log(loc, "buttonfuncupdate içerisi loc")
     dispatch(updateDataFunc({...productInfo, id: loc}))
     dispatch(modalFunc())
   }
   
   const buttonFunc = () => {
+    console.log(loc, "buttonfunc içerisi loc")
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }))
+    console.log(productInfo.id, "dataid degeri buttonfuncici")
+    console.log(productInfo, "create sonrası")
     dispatch(modalFunc())
   }
-
-  
 
   const contentModal = (
     <>
@@ -63,6 +67,7 @@ const Product = () => {
       <Button btnText={loc ? "Güncelle" : "Oluştur"} onClick={loc ? buttonFuncUpdate : buttonFunc}></Button>
     </>
   )
+
   return (
     <div>
 
