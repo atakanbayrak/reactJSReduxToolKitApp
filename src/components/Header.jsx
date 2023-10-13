@@ -11,7 +11,7 @@ const Header = () => {
         </div>
         <div className='flex items-center gap-5'>
             <div>
-                <select name='' id='' className='text-black rounded-md px-2'>
+                <select name='' id='' className='text-black rounded-md px-2 cursor-pointer'>
                     <option value="asc">Artan</option>
                     <option value="desc">Azalan</option>
                 </select>
