@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../components/Modal'
 import Input from '../components/Input'
 import Button from '../components/Button'
-import { createDataFunc } from '../redux/dataSlice.js'
+import { createDataFunc, updateDataFunc } from '../redux/dataSlice.js'
 import { modalFunc } from '../redux/modalSlice'
 import { useLocation } from 'react-router-dom'
 
@@ -28,37 +28,39 @@ const Product = () => {
   }
   let loc = location?.search.split('=')[1]
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       if (loc) {
         const foundData = data.find(dt => dt.id === loc);
         if (foundData) {
+          console.log("asdasd")
           await setProductInfo(foundData);
-        } else {
-          // Veri bulunamazsa ne yapılacağını burada belirleyebilirsiniz.
         }
       }
     };
   
     fetchData();
   }, [loc]);
+  const buttonFuncUpdate = () => {
+    dispatch(updateDataFunc({...productInfo, id: loc}))
+    dispatch(modalFunc())
+  }
   
-  
-  const buttonCreateFunc = () => {
+  const buttonFunc = () => {
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }))
     dispatch(modalFunc())
   }
 
-  const buttonUpdateFunc = () => {
-    
-  }
+  
 
   const contentModal = (
     <>
       <Input value={productInfo.name} type={"text"} placeholder={"Ürün Ekle"} name={"name"} id={"1"} onChange={e => onChangeFunc(e, "name")} />
       <Input value={productInfo.price} placeholder={"Fiyat Ekle"} type={"text"} name={"price"} id={"2"} onChange={e => onChangeFunc(e, "price")} />
       <Input placeholder={"Resim Seç"} type={"file"} name={"url"} id={"3"} onChange={e => onChangeFunc(e, "url")} />
-      <Button btnText={loc ? "Güncelle" : "Oluştur"} onClick={ loc ? buttonUpdateFunc : buttonCreateFunc}></Button>
+      <Button btnText={loc ? "Güncelle" : "Oluştur"} onClick={loc ? buttonFuncUpdate : buttonFunc}></Button>
     </>
   )
   return (
@@ -78,3 +80,4 @@ const Product = () => {
 }
 
 export default Product
+
