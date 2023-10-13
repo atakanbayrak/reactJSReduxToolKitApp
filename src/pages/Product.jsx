@@ -33,7 +33,7 @@ const Product = () => {
     const fetchData = async () => {
       if (loc) {
         console.log(loc, "use effect içerisi loc degeri")
-        const foundData = await data.find(dt => dt.id === loc)
+        const foundData = await data.find(dt => dt.id == loc)
         console.log(productInfo, "loc tıklaması sonrası")
         if (foundData) {
           console.log("asdasd")
