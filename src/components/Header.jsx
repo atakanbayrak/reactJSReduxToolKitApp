@@ -2,7 +2,7 @@ import React from 'react'
 import {MdAddChart, MdPostAdd} from "react-icons/md"
 import { useDispatch } from 'react-redux'
 import { modalFunc } from '../redux/modalSlice'
-import { sortingDataFunc } from '../redux/dataSlice'
+import { searchingDataFunc, sortingDataFunc } from '../redux/dataSlice'
 const Header = () => {
     const dispatch = useDispatch()
   return (
@@ -18,7 +18,7 @@ const Header = () => {
                 </select>
             </div>
             <div>
-                <input className='rounded-md px-2' type='text' placeholder='Arama yap...'/>
+                <input onChange={e => dispatch(searchingDataFunc(e.target.value))} className='rounded-md px-2 text-black' type='text' placeholder='Arama yap...' />
             </div>
             <div onClick={() => dispatch(modalFunc())} className='bg-indigo-800 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer'>
                 <MdPostAdd size={24}/>

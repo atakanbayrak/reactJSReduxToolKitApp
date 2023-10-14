@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   data: [],
+  keyword: ""
 }
 
 export const dataSlice = createSlice({
@@ -13,20 +14,24 @@ export const dataSlice = createSlice({
     },
 
     sortingDataFunc: (state, action) => {
-      state.data = [...state.data.sort((a,b) => action.payload == "asc" ? a.price - b.price : action.payload == "desc" ? b.price-a.price : null)]
+      state.data = [...state.data.sort((a, b) => action.payload == "asc" ? a.price - b.price : action.payload == "desc" ? b.price - a.price : null)]
     },
 
     deleteDataFunc: (state, action) => {
-          state.data = [...state.data.filter(dt => dt.id !== action.payload)]
+      state.data = [...state.data.filter(dt => dt.id !== action.payload)]
     },
 
     updateDataFunc: (state, action) => {
-      state.data = [...state.data.map(dt => dt.id == action.payload.id ?({...dt, ...action.payload}) : dt)]
+      state.data = [...state.data.map(dt => dt.id == action.payload.id ? ({ ...dt, ...action.payload }) : dt)]
+    },
+
+    searchingDataFunc: (state, action) => {
+      state.keyword = action.payload
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {createDataFunc, deleteDataFunc, updateDataFunc, sortingDataFunc} = dataSlice.actions
+export const { createDataFunc, deleteDataFunc, updateDataFunc, sortingDataFunc, searchingDataFunc } = dataSlice.actions
 
 export default dataSlice.reducer
