@@ -6,7 +6,7 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { createDataFunc, updateDataFunc } from '../redux/dataSlice.js'
 import { modalFunc } from '../redux/modalSlice'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Product = () => {
   const { modal } = useSelector(state => state.modal)
@@ -15,6 +15,7 @@ const Product = () => {
 
   const dispatch = useDispatch()
   const location = useLocation()
+  const navigate = useNavigate()
 
   let loc = location?.search.split('=')[1]
   const [productInfo, setProductInfo] = useState({ name: "", price: "", url: ""})
@@ -22,21 +23,16 @@ const Product = () => {
   const onChangeFunc = (e, type) => {
     if (type === "url") {
       setProductInfo(prev => ({ ...prev, [e.target.name]: URL.createObjectURL(e.target.files[0]) }))
-
     } else {
       setProductInfo(prev => ({ ...prev, [e.target.name]: e.target.value }))
-
     }
   }
   
   useEffect(() => {
     const fetchData = async () => {
       if (loc) {
-        console.log(loc, "use effect içerisi loc degeri")
         const foundData = await data.find(dt => dt.id == loc)
-        console.log(productInfo, "loc tıklaması sonrası")
         if (foundData) {
-          console.log("asdasd")
           setProductInfo(foundData);
         }
       }
@@ -46,16 +42,13 @@ const Product = () => {
   }, [loc,data]);
 
   const buttonFuncUpdate = () => {
-    console.log(loc, "buttonfuncupdate içerisi loc")
     dispatch(updateDataFunc({...productInfo, id: loc}))
     dispatch(modalFunc())
+    navigate("/")
   }
   
   const buttonFunc = () => {
-    console.log(loc, "buttonfunc içerisi loc")
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }))
-    console.log(productInfo.id, "dataid degeri buttonfuncici")
-    console.log(productInfo, "create sonrası")
     dispatch(modalFunc())
   }
 
